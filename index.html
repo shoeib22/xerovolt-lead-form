@@ -360,9 +360,10 @@
 </div>
 
 <script>
-  // ── REPLACE THESE with your n8n webhook URLs ──
+  // ── n8n Production Webhook URLs ──
   const N8N_SEND_OTP_URL   = 'https://n8n.xerovolt.in/webhook-test/xerovolt-lead-submit';
   const N8N_VERIFY_OTP_URL = 'https://n8n.xerovolt.in/webhook-test/xerovolt-otp-verify';
+  const N8N_RESEND_OTP_URL = 'https://n8n.xerovolt.in/webhook-test/80.xerovolt-otp-resend';
 
   let leadData = {};
   let timerInterval = null;
@@ -376,7 +377,16 @@
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('err-email','email'); valid=false; } else hideErr('err-email','email');
     if (!city)   { showErr('err-city','city');  valid=false; } else hideErr('err-city','city');
     if (!valid) return;
-    leadData = { firstName: fname, lastName: document.getElementById('lname').value.trim(), email, city, interest: document.getElementById('interest').value, message: document.getElementById('message').value.trim() };
+    leadData = {
+      firstName: fname,
+      lastName:  document.getElementById('lname').value.trim(),
+      email,
+      city,
+      interest: document.getElementById('interest').value,
+      message:  document.getElementById('message').value.trim(),
+      source:   document.referrer || 'direct',
+      timestamp: new Date().toISOString()
+    };
     setStep(2);
   }
 
@@ -385,14 +395,36 @@
     if (!/^\d{10}$/.test(phone)) { showErr('err-phone','phone'); return; }
     hideErr('err-phone','phone');
     leadData.phone = '+91' + phone;
-    document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
+
     const btn = document.getElementById('send-otp-btn');
-    btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Sending…';
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.textContent = 'Sending\u2026';
+
     try {
-      await fetch(N8N_SEND_OTP_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: leadData.phone, name: leadData.firstName }) });
-    } catch(e) { console.warn('n8n unreachable — demo mode'); }
-    btn.classList.remove('loading'); btn.textContent = 'Send OTP'; btn.disabled = false;
-    setStep(3); startTimer(); document.getElementById('otp0').focus();
+      const res = await fetch(N8N_SEND_OTP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadData)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
+      btn.classList.remove('loading');
+      btn.textContent = 'Send OTP';
+      btn.disabled = false;
+      setStep(3);
+      startTimer();
+      document.getElementById('otp0').focus();
+    } catch(e) {
+      console.error('Send OTP failed:', e);
+      btn.classList.remove('loading');
+      btn.textContent = 'Send OTP';
+      btn.disabled = false;
+      const errEl = document.getElementById('err-phone');
+      errEl.textContent = 'Could not send OTP. Please try again.';
+      errEl.classList.add('show');
+      document.getElementById('phone').classList.add('error');
+    }
   }
 
   document.querySelectorAll('.otp-box').forEach((box,i) => {
@@ -402,7 +434,9 @@
       if (v && i < 5) document.getElementById('otp'+(i+1)).focus();
       e.target.classList.toggle('filled', !!e.target.value);
     });
-    box.addEventListener('keydown', e => { if (e.key==='Backspace' && !e.target.value && i>0) document.getElementById('otp'+(i-1)).focus(); });
+    box.addEventListener('keydown', e => {
+      if (e.key==='Backspace' && !e.target.value && i>0) document.getElementById('otp'+(i-1)).focus();
+    });
     box.addEventListener('paste', e => {
       e.preventDefault();
       const p = e.clipboardData.getData('text').replace(/\D/g,'').slice(0,6);
@@ -415,46 +449,70 @@
     const otp = [0,1,2,3,4,5].map(i=>document.getElementById('otp'+i).value).join('');
     if (otp.length < 6) { showOtpErr('Enter all 6 digits'); return; }
     const btn = document.getElementById('verify-btn');
-    btn.disabled=true; btn.classList.add('loading'); btn.textContent='Verifying…';
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.textContent = 'Verifying\u2026';
     try {
-      const res = await fetch(N8N_VERIFY_OTP_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({...leadData, otp}) });
+      const res = await fetch(N8N_VERIFY_OTP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({...leadData, otp})
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (data.success) { showSuccess(); }
-      else { showOtpErr(data.message || 'Incorrect OTP. Please try again.'); btn.disabled=false; btn.classList.remove('loading'); btn.textContent='Verify & Submit'; }
-    } catch(e) { console.warn('n8n unreachable — demo mode: accepting OTP'); showSuccess(); }
+      if (data.success) {
+        showSuccess();
+      } else {
+        showOtpErr(data.message || 'Incorrect OTP. Please try again.');
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        btn.textContent = 'Verify & Submit';
+      }
+    } catch(e) {
+      console.error('Verify OTP failed:', e);
+      showOtpErr('Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      btn.textContent = 'Verify & Submit';
+    }
   }
 
   function showOtpErr(msg) {
     const el = document.getElementById('err-otp');
     el.textContent = msg; el.classList.add('show');
     document.querySelectorAll('.otp-box').forEach(b => b.style.borderColor='var(--error)');
-    setTimeout(() => { el.classList.remove('show'); document.querySelectorAll('.otp-box').forEach(b=>b.style.borderColor=''); }, 3000);
+    setTimeout(() => { el.classList.remove('show'); document.querySelectorAll('.otp-box').forEach(b=>b.style.borderColor=''); }, 4000);
   }
 
   function startTimer() {
     let s = 30;
     const btn = document.getElementById('resend-btn');
-    btn.disabled = true; btn.textContent = `Resend OTP in ${s}s`;
+    btn.disabled = true; btn.textContent = 'Resend OTP in ' + s + 's';
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
       s--;
       if (s <= 0) { clearInterval(timerInterval); btn.disabled=false; btn.textContent='Resend OTP'; }
-      else btn.textContent = `Resend OTP in ${s}s`;
+      else btn.textContent = 'Resend OTP in ' + s + 's';
     }, 1000);
   }
 
   async function resendOTP() {
     document.querySelectorAll('.otp-box').forEach(b=>{b.value='';b.classList.remove('filled');});
     startTimer(); document.getElementById('otp0').focus();
-    try { await fetch(N8N_SEND_OTP_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: leadData.phone, name: leadData.firstName }) }); }
-    catch(e) { console.warn('n8n unreachable'); }
+    try {
+      await fetch(N8N_RESEND_OTP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: leadData.phone, name: leadData.firstName })
+      });
+    } catch(e) { console.error('Resend failed:', e); }
   }
 
   function showSuccess() {
     clearInterval(timerInterval);
     document.getElementById('step-indicator').style.display = 'none';
     document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
-    document.getElementById('success-msg').textContent = `Thank you, ${leadData.firstName}! Our team will reach out to ${leadData.phone} within 24 hours to schedule your free demo.`;
+    document.getElementById('success-msg').textContent = 'Thank you, ' + leadData.firstName + '! Our team will reach out to ' + leadData.phone + ' within 24 hours to schedule your free demo.';
     document.getElementById('success-view').classList.add('show');
     [1,2,3].forEach(i => setDot(i,'done'));
   }
@@ -463,13 +521,13 @@
     [1,2,3].forEach(i => {
       document.getElementById('step-'+i).classList.toggle('active', i===n);
       const d = document.getElementById('dot-'+i);
-      if (i<n) { d.className='step-dot done'; d.innerHTML='✓'; }
+      if (i<n) { d.className='step-dot done'; d.innerHTML='\u2713'; }
       else if (i===n) { d.className='step-dot active'; d.textContent=i; }
       else { d.className='step-dot'; d.textContent=i; }
       if (i<3) document.getElementById('line-'+i).classList.toggle('done', i<n);
     });
   }
-  function setDot(i,state) { const d=document.getElementById('dot-'+i); d.className='step-dot '+state; if(state==='done') d.innerHTML='✓'; }
+  function setDot(i,state) { const d=document.getElementById('dot-'+i); d.className='step-dot '+state; if(state==='done') d.innerHTML='\u2713'; }
   function showErr(eid,fid) { document.getElementById(eid).classList.add('show'); document.getElementById(fid)?.classList.add('error'); }
   function hideErr(eid,fid) { document.getElementById(eid).classList.remove('show'); document.getElementById(fid)?.classList.remove('error'); }
 </script>
