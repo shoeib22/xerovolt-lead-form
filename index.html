@@ -32,7 +32,6 @@
     overflow-x: hidden;
   }
 
-  /* Subtle noise texture overlay */
   body::before {
     content: '';
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -40,7 +39,6 @@
     opacity: 0.4;
   }
 
-  /* Nav */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -70,7 +68,6 @@
   }
   .nav-cta:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
 
-  /* Page layout */
   .page-wrap {
     position: relative; z-index: 1;
     min-height: 100vh;
@@ -81,7 +78,6 @@
     margin: 0 auto;
   }
 
-  /* Left panel */
   .left-panel {
     padding: 80px 64px 80px 56px;
     display: flex; flex-direction: column; justify-content: center;
@@ -148,7 +144,6 @@
   }
   .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
 
-  /* Right panel */
   .right-panel {
     padding: 80px 56px 80px 64px;
     display: flex; flex-direction: column; justify-content: center;
@@ -165,7 +160,6 @@
     background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,255,255,0.04) 0%, transparent 60%);
   }
 
-  /* Step indicator */
   .step-indicator {
     display: flex; align-items: center; margin-bottom: 36px;
   }
@@ -181,7 +175,6 @@
   .step-line { flex: 1; height: 1px; background: var(--border); transition: background 0.4s; }
   .step-line.done { background: rgba(255,255,255,0.2); }
 
-  /* Steps */
   .form-step { display: none; }
   .form-step.active { display: block; animation: fadeIn 0.3s ease; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
@@ -213,7 +206,7 @@
     border-color: rgba(255,255,255,0.3);
     background: var(--surface-3);
   }
-  input.error { border-color: var(--error); }
+  input.error, select.error { border-color: var(--error); }
 
   select {
     cursor: pointer;
@@ -233,7 +226,6 @@
   }
   .phone-wrap input { padding-left: 60px; }
 
-  /* OTP */
   .otp-wrap { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
   .otp-box {
     width: 50px; height: 56px;
@@ -259,7 +251,6 @@
   .resend-btn:not(:disabled):hover { color: var(--text); }
   .resend-btn:disabled { cursor: default; opacity: 0.4; }
 
-  /* Buttons */
   .btn-primary {
     width: 100%; padding: 14px 24px;
     background: #fff; color: #000;
@@ -282,7 +273,6 @@
   .err-msg { font-size: 12px; color: var(--error); margin-top: 5px; display: none; }
   .err-msg.show { display: block; }
 
-  /* Success */
   .success-view { display: none; text-align: center; padding: 20px 0; }
   .success-view.show { display: block; animation: fadeIn .4s ease; }
   .success-icon {
@@ -298,13 +288,11 @@
   }
   .success-msg { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 300px; margin: 0 auto; }
 
-  /* Legal */
   .form-legal {
     font-size: 11px; color: var(--text-muted); text-align: center;
     margin-top: 14px; line-height: 1.7; letter-spacing: 0.02em;
   }
 
-  /* Responsive */
   @media (max-width: 960px) {
     nav { padding: 0 24px; }
     .nav-links { display: none; }
@@ -324,7 +312,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="https://www.qubetechnologies.in/" class="nav-logo">Xerovolt</a>
   <div class="nav-links">
@@ -339,7 +326,6 @@
 
 <div class="page-wrap">
 
-  <!-- LEFT PANEL -->
   <div class="left-panel">
   <div class="label-tag">
     <div class="label-tag-dot"></div>
@@ -391,7 +377,6 @@
   </div>
 </div>
 
-  <!-- RIGHT PANEL -->
   <div class="right-panel">
     <div class="form-card" id="form-card">
 
@@ -403,7 +388,6 @@
         <div class="step-dot" id="dot-3">3</div>
       </div>
 
-      <!-- Step 1 -->
       <div class="form-step active" id="step-1">
         <div class="form-title">Tell us about yourself</div>
         <div class="form-sub">We'll use this to personalise your demo session.</div>
@@ -437,17 +421,22 @@
           <label for="interest">I'm interested in</label>
           <select id="interest">
             <option value="" disabled selected>Select product interest</option>
-            <option>Xerovolt smart home </option><option>Xerovolt fresh air ventilation</option>
-            <option>Xerovolt smart locks</option><option>Not sure yet, need advice</option>
+            <option>Xerovolt smart home</option>
+            <option>Xerovolt fresh air ventilation</option>
+            <option>Xerovolt smart locks</option>
+            <option>Not sure yet, need advice</option>
           </select>
         </div>
-         <div class="field">
-          <label for="interest">when are you planing the project?</label>
-          <select id="interest">
-            <option value="" disabled selected>Select</option>
-            <option>1 Month </option><option>3 Months</option>
-            <option>6 Months</option><option>Not sure yet</option>
+        <div class="field">
+          <label for="timeline">When are you planning the project?</label>
+          <select id="timeline">
+            <option value="" disabled selected>Select timeline</option>
+            <option>Within 1 Month</option>
+            <option>Within 3 Months</option>
+            <option>Within 6 Months</option>
+            <option>Not sure yet</option>
           </select>
+          <div class="err-msg" id="err-timeline">Please select your project timeline</div>
         </div>
         <div class="field">
           <label for="message">Anything we should know? <span style="color:rgba(255,255,255,0.2)">(optional)</span></label>
@@ -456,7 +445,6 @@
         <button class="btn-primary" onclick="goToStep2()">Continue →</button>
       </div>
 
-      <!-- Step 2 -->
       <div class="form-step" id="step-2">
         <div class="form-title">Verify your number</div>
         <div class="form-sub">We'll send a 6-digit OTP to confirm your identity and prevent spam.</div>
@@ -472,7 +460,6 @@
         <div class="form-legal" style="margin-top:12px;">By continuing, you agree to receive a one-time SMS. Standard rates apply.</div>
       </div>
 
-      <!-- Step 3 -->
       <div class="form-step" id="step-3">
         <div class="form-title">Enter the OTP</div>
         <div class="otp-meta">We've sent a 6-digit code to <strong id="otp-phone-display"></strong><br>Enter it below to confirm your number.</div>
@@ -489,7 +476,6 @@
         <button class="btn-primary" id="verify-btn" onclick="verifyOTP()">Verify &amp; Submit</button>
       </div>
 
-      <!-- Success -->
       <div class="success-view" id="success-view">
         <div class="success-icon">
           <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -516,16 +502,23 @@
     const fname = document.getElementById('fname').value.trim();
     const email = document.getElementById('email').value.trim();
     const city  = document.getElementById('city').value;
+    const timeline = document.getElementById('timeline').value;
     let valid = true;
+
     if (!fname)  { showErr('err-fname','fname'); valid=false; } else hideErr('err-fname','fname');
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('err-email','email'); valid=false; } else hideErr('err-email','email');
     if (!city)   { showErr('err-city','city');  valid=false; } else hideErr('err-city','city');
+    if (!timeline) { showErr('err-timeline','timeline'); valid=false; } else hideErr('err-timeline', 'timeline');
+
     if (!valid) return;
+
     leadData = {
       firstName: fname,
       lastName:  document.getElementById('lname').value.trim(),
-      email, city,
+      email, 
+      city,
       interest: document.getElementById('interest').value,
+      projectTimeline: timeline,
       message:  document.getElementById('message').value.trim(),
       source:   document.referrer || 'direct',
       timestamp: new Date().toISOString()
