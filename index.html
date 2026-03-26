@@ -39,6 +39,7 @@
     opacity: 0.4;
   }
 
+  /* Navigation */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -49,10 +50,18 @@
     -webkit-backdrop-filter: blur(16px);
   }
   .nav-logo {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 900; font-size: 14px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text); text-decoration: none;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    height: 24px; /* Optimal height for 64px navbar */
+    width: auto;
+    display: block;
+    transition: opacity 0.2s;
+  }
+  .nav-logo:hover img {
+    opacity: 0.8;
   }
   .nav-links { display: flex; align-items: center; gap: 32px; }
   .nav-links a {
@@ -68,6 +77,7 @@
   }
   .nav-cta:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
 
+  /* Page Layout */
   .page-wrap {
     position: relative; z-index: 1;
     min-height: 100vh;
@@ -313,7 +323,9 @@
 <body>
 
 <nav>
-  <a href="https://www.qubetechnologies.in/" class="nav-logo">Xerovolt</a>
+  <a href="https://www.qubetechnologies.in/" class="nav-logo">
+    <img src="https://www.qubetechnologies.in/logo/xerovolt.png" alt="Xerovolt Logo">
+  </a>
   <div class="nav-links">
     <a href="https://www.qubetechnologies.in/">Home</a>
     <a href="https://www.qubetechnologies.in/services">Solutions</a>
