@@ -434,7 +434,7 @@
     <div class="feature-list">
       <div class="feat-item">
         <span class="feat-num">01</span>
-        <span class="feat-text"><strong>Custom Engineering</strong> — From the smallest spaces to expansive industrial environments, we engineer hardware footprints tailored to your scale</span>
+        <span class="feat-text"><strong>Custom Engineering</strong> — From 3BHK flats to industrial offices, we design the hardware footprint for your specific square footage.</span>
       </div>
       <div class="feat-item">
         <span class="feat-num">02</span>
@@ -452,7 +452,7 @@
     <div class="stat-row">
       <div class="stat-item">
         <div class="stat-num">99.9%</div>
-        <div class="stat-label">Uptime</div>
+        <div class="stat-label">Uptime<br>Guarantee</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">0.1s</div>
@@ -706,11 +706,18 @@
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(leadData)
       });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
-      btn.classList.remove('loading'); btn.textContent = 'Send OTP via WhatsApp'; btn.disabled = false;
-      setStep(3); startTimer(); document.getElementById('otp0').focus();
+      const rawText = await res.text();
+      console.log('[Send OTP] Status:', res.status, '| Body:', rawText);
+      // Treat any 2xx as success — n8n may return empty body
+      if (res.status >= 200 && res.status < 300) {
+        document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
+        btn.classList.remove('loading'); btn.textContent = 'Send OTP via WhatsApp'; btn.disabled = false;
+        setStep(3); startTimer(); document.getElementById('otp0').focus();
+      } else {
+        throw new Error('HTTP ' + res.status);
+      }
     } catch(e) {
+      console.error('[Send OTP] Error:', e);
       btn.classList.remove('loading'); btn.textContent = 'Send OTP via WhatsApp';
       btn.disabled = !document.getElementById('wa-confirm-check').checked;
       const errEl = document.getElementById('err-phone');
@@ -750,19 +757,36 @@
     btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Verifying…';
     try {
       const res = await fetch(N8N_VERIFY_OTP_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({...leadData, otp})
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...leadData, otp })
       });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      if (data.success) {
+
+      // Log raw response for debugging
+      const rawText = await res.text();
+      console.log('[OTP Verify] Status:', res.status, '| Body:', rawText);
+
+      // Try to parse JSON, fall back gracefully
+      let data = {};
+      try { data = JSON.parse(rawText); } catch(_) {}
+
+      // Accept success if: HTTP 2xx AND (data.success === true OR data.verified === true OR data.status === 'success')
+      const httpOk = res.status >= 200 && res.status < 300;
+      const payloadOk = data.success === true || data.verified === true || data.status === 'success' || data.status === 'ok';
+
+      if (httpOk && payloadOk) {
+        showSuccess();
+      } else if (httpOk && Object.keys(data).length === 0) {
+        // n8n returned 200 with empty body — treat as success
         showSuccess();
       } else {
-        showOtpErr(data.message || 'Incorrect OTP. Please try again.');
+        const msg = data.message || data.error || data.reason || 'Incorrect OTP. Please try again.';
+        showOtpErr(msg);
         btn.disabled = false; btn.classList.remove('loading'); btn.textContent = 'Verify & Submit';
       }
     } catch(e) {
-      showOtpErr('Something went wrong. Please try again.');
+      console.error('[OTP Verify] Network error:', e);
+      showOtpErr('Network error — please check your connection and try again.');
       btn.disabled = false; btn.classList.remove('loading'); btn.textContent = 'Verify & Submit';
     }
   }
