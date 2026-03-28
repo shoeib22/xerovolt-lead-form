@@ -22,6 +22,9 @@
     --text-muted: rgba(255,255,255,0.3);
     --accent: #ffffff;
     --error: #ff5a5a;
+    --wa-green: #25D366;
+    --wa-green-dim: rgba(37,211,102,0.12);
+    --wa-green-border: rgba(37,211,102,0.3);
   }
 
   body {
@@ -50,19 +53,12 @@
     -webkit-backdrop-filter: blur(16px);
   }
   .nav-logo {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
+    display: flex; align-items: center; text-decoration: none;
   }
   .nav-logo img {
-    height: 24px; /* Optimal height for 64px navbar */
-    width: auto;
-    display: block;
-    transition: opacity 0.2s;
+    height: 24px; width: auto; display: block; transition: opacity 0.2s;
   }
-  .nav-logo:hover img {
-    opacity: 0.8;
-  }
+  .nav-logo:hover img { opacity: 0.8; }
   .nav-links { display: flex; align-items: center; gap: 32px; }
   .nav-links a {
     font-size: 13px; font-weight: 400; color: var(--text-dim);
@@ -80,25 +76,20 @@
   /* Page Layout */
   .page-wrap {
     position: relative; z-index: 1;
-    min-height: 100vh;
-    padding-top: 64px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: 1360px;
-    margin: 0 auto;
+    min-height: 100vh; padding-top: 64px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    max-width: 1360px; margin: 0 auto;
   }
 
   .left-panel {
     padding: 80px 64px 80px 56px;
     display: flex; flex-direction: column; justify-content: center;
-    border-right: 1px solid var(--border);
-    position: relative;
+    border-right: 1px solid var(--border); position: relative;
   }
 
   .label-tag {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border-hover);
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border-hover);
     border-radius: 100px; padding: 5px 14px 5px 10px;
     font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--text-dim);
@@ -111,13 +102,9 @@
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
   .headline {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 900;
-    font-size: clamp(42px, 4vw, 64px);
-    line-height: 0.97;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 24px;
+    font-family: 'Outfit', sans-serif; font-weight: 900;
+    font-size: clamp(42px, 4vw, 64px); line-height: 0.97;
+    letter-spacing: -0.03em; color: var(--text); margin-bottom: 24px;
   }
   .headline .dim { color: rgba(255,255,255,0.3); }
 
@@ -130,8 +117,7 @@
   .feat-item {
     display: flex; align-items: flex-start; gap: 14px;
     padding: 16px 18px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 12px;
-    transition: border-color 0.2s;
+    border: 1px solid var(--border); border-radius: 12px; transition: border-color 0.2s;
   }
   .feat-item:hover { border-color: var(--border-hover); }
   .feat-num {
@@ -160,16 +146,15 @@
   }
 
   .form-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px; padding: 40px;
-    position: relative; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px; position: relative; overflow: hidden;
   }
   .form-card::after {
     content: ''; position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,255,255,0.04) 0%, transparent 60%);
   }
 
+  /* Step indicator — now 4 steps */
   .step-indicator {
     display: flex; align-items: center; margin-bottom: 36px;
   }
@@ -213,8 +198,7 @@
   }
   input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
   input:focus, select:focus, textarea:focus {
-    border-color: rgba(255,255,255,0.3);
-    background: var(--surface-3);
+    border-color: rgba(255,255,255,0.3); background: var(--surface-3);
   }
   input.error, select.error { border-color: var(--error); }
 
@@ -225,7 +209,6 @@
     color: var(--text);
   }
   select option { background: #1a1a1a; color: #fff; }
-
   textarea { resize: none; height: 78px; line-height: 1.55; }
 
   .phone-wrap { position: relative; }
@@ -236,6 +219,94 @@
   }
   .phone-wrap input { padding-left: 60px; }
 
+  /* ── WhatsApp initiation block ── */
+  .wa-initiate-block {
+    background: var(--wa-green-dim);
+    border: 1px solid var(--wa-green-border);
+    border-radius: 14px;
+    padding: 20px 20px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .wa-initiate-header {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .wa-icon-wrap {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    background: var(--wa-green);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .wa-icon-wrap svg { width: 20px; height: 20px; fill: #fff; }
+  .wa-initiate-text { flex: 1; }
+  .wa-initiate-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600; font-size: 14px;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .wa-initiate-desc {
+    font-size: 12.5px; line-height: 1.65;
+    color: var(--text-dim);
+  }
+  .wa-initiate-desc strong { color: rgba(255,255,255,0.75); font-weight: 500; }
+
+  .wa-steps {
+    display: flex; flex-direction: column; gap: 8px;
+    padding-left: 4px;
+  }
+  .wa-step-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .wa-step-num {
+    flex-shrink: 0;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(37,211,102,0.2); border: 1px solid rgba(37,211,102,0.4);
+    font-family: 'Outfit', sans-serif; font-weight: 700;
+    font-size: 10px; color: var(--wa-green);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .wa-step-label {
+    font-size: 12.5px; color: var(--text-dim); line-height: 1.4;
+  }
+
+  .btn-wa {
+    width: 100%; padding: 13px 20px;
+    background: var(--wa-green); color: #fff;
+    border: none; border-radius: 10px;
+    font-family: 'Outfit', sans-serif; font-weight: 700;
+    font-size: 14px; letter-spacing: 0.04em;
+    cursor: pointer; transition: background 0.2s, transform 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    text-decoration: none;
+  }
+  .btn-wa:hover { background: #1ebe5b; transform: translateY(-1px); }
+  .btn-wa:active { transform: translateY(0); }
+  .btn-wa svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
+
+  .wa-sent-confirm {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px; color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .wa-sent-confirm:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.06); }
+  .wa-sent-confirm input[type="checkbox"] {
+    width: 16px; height: 16px; min-width: 16px;
+    accent-color: var(--wa-green);
+    cursor: pointer; margin: 0; padding: 0;
+  }
+  .wa-sent-confirm-label { color: var(--text-dim); line-height: 1.4; }
+  .wa-sent-confirm-label strong { color: rgba(255,255,255,0.75); font-weight: 500; }
+
+  /* OTP boxes */
   .otp-wrap { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
   .otp-box {
     width: 50px; height: 56px;
@@ -339,67 +410,67 @@
 <div class="page-wrap">
 
   <div class="left-panel">
-  <div class="label-tag">
-    <div class="label-tag-dot"></div>
-    Now onboarding early adopters
-  </div>
-
-  <h1 class="headline">
-    The Future of<br>
-    <span class="dim">Autonomous</span><br>
-    Living.
-  </h1>
-
-  <p class="subhead">
-    Xerovolt is more than hardware. It is a unified intelligence layer for your space—combining industrial-grade ERV systems, smart power, and intuitive control into a single, seamless experience.
-  </p>
-
-  <div class="feature-list">
-    <div class="feat-item">
-      <span class="feat-num">01</span>
-      <span class="feat-text"><strong>Custom Engineering</strong> — From 3BHK flats to industrial offices, we design the hardware footprint for your specific square footage.</span>
+    <div class="label-tag">
+      <div class="label-tag-dot"></div>
+      Now onboarding early adopters
     </div>
-    <div class="feat-item">
-      <span class="feat-num">02</span>
-      <span class="feat-text"><strong>Native Control</strong> — Manage everything via the Xerovolt App, built for ultra-low latency and cross-platform reliability.</span>
+    <h1 class="headline">
+      The Future of<br>
+      <span class="dim">Autonomous</span><br>
+      Living.
+    </h1>
+    <p class="subhead">
+      Xerovolt is more than hardware. It is a unified intelligence layer for your space—combining industrial-grade ERV systems, smart power, and intuitive control into a single, seamless experience.
+    </p>
+    <div class="feature-list">
+      <div class="feat-item">
+        <span class="feat-num">01</span>
+        <span class="feat-text"><strong>Custom Engineering</strong> — From 3BHK flats to industrial offices, we design the hardware footprint for your specific square footage.</span>
+      </div>
+      <div class="feat-item">
+        <span class="feat-num">02</span>
+        <span class="feat-text"><strong>Native Control</strong> — Manage everything via the Xerovolt App, built for ultra-low latency and cross-platform reliability.</span>
+      </div>
+      <div class="feat-item">
+        <span class="feat-num">03</span>
+        <span class="feat-text"><strong>Live Intelligence</strong> — Real-time sensor data tracks pollutants, energy surges, and climate metrics in one dashboard.</span>
+      </div>
+      <div class="feat-item">
+        <span class="feat-num">04</span>
+        <span class="feat-text"><strong>White-Glove Setup</strong> — Full architectural integration, installation, and a 1-year hardware warranty included.</span>
+      </div>
     </div>
-    <div class="feat-item">
-      <span class="feat-num">03</span>
-      <span class="feat-text"><strong>Live Intelligence</strong> — Real-time sensor data tracks pollutants, energy surges, and climate metrics in one dashboard.</span>
-    </div>
-    <div class="feat-item">
-      <span class="feat-num">04</span>
-      <span class="feat-text"><strong>White-Glove Setup</strong> — Full architectural integration, installation, and a 1-year hardware warranty included.</span>
-    </div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-item">
-      <div class="stat-num">99.9%</div>
-      <div class="stat-label">Uptime<br>Guarantee</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">0.1s</div>
-      <div class="stat-label">Response<br>Time</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">24/7</div>
-      <div class="stat-label">System<br>Monitoring</div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-num">99.9%</div>
+        <div class="stat-label">Uptime<br>Guarantee</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">0.1s</div>
+        <div class="stat-label">Response<br>Time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">System<br>Monitoring</div>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="right-panel">
     <div class="form-card" id="form-card">
 
+      <!-- Step indicator: now 4 dots -->
       <div class="step-indicator" id="step-indicator">
         <div class="step-dot active" id="dot-1">1</div>
         <div class="step-line" id="line-1"></div>
         <div class="step-dot" id="dot-2">2</div>
         <div class="step-line" id="line-2"></div>
         <div class="step-dot" id="dot-3">3</div>
+        <div class="step-line" id="line-3"></div>
+        <div class="step-dot" id="dot-4">4</div>
       </div>
 
+      <!-- Step 1: Personal details -->
       <div class="form-step active" id="step-1">
         <div class="form-title">Tell us about yourself</div>
         <div class="form-sub">We'll use this to personalise your demo session.</div>
@@ -457,9 +528,11 @@
         <button class="btn-primary" onclick="goToStep2()">Continue →</button>
       </div>
 
+      <!-- Step 2: Phone + WhatsApp initiation -->
       <div class="form-step" id="step-2">
         <div class="form-title">Verify your number</div>
-        <div class="form-sub">We'll send a 6-digit OTP to confirm your identity and prevent spam.</div>
+        <div class="form-sub">We send the OTP via WhatsApp. You'll need to message us first so we can reply — it only takes a second.</div>
+
         <div class="field">
           <label for="phone">Mobile number</label>
           <div class="phone-wrap">
@@ -468,13 +541,53 @@
           </div>
           <div class="err-msg" id="err-phone">Enter a valid 10-digit mobile number</div>
         </div>
-        <button class="btn-primary" id="send-otp-btn" onclick="sendOTP()">Send OTP</button>
-        <div class="form-legal" style="margin-top:12px;">By continuing, you agree to receive a one-time SMS. Standard rates apply.</div>
+
+        <!-- WhatsApp initiation card -->
+        <div class="wa-initiate-block">
+          <div class="wa-initiate-header">
+            <div class="wa-icon-wrap">
+              <!-- WhatsApp SVG icon -->
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div class="wa-initiate-text">
+              <div class="wa-initiate-title">One quick step before your OTP</div>
+              <div class="wa-initiate-desc">WhatsApp requires you to <strong>send us a message first</strong> before we can send you the OTP.</div>
+            </div>
+          </div>
+          <div class="wa-steps">
+            <div class="wa-step-row">
+              <div class="wa-step-num">1</div>
+              <div class="wa-step-label">Tap the button below — it opens WhatsApp with a pre-filled message</div>
+            </div>
+            <div class="wa-step-row">
+              <div class="wa-step-num">2</div>
+              <div class="wa-step-label">Hit <strong style="color:rgba(255,255,255,0.7)">Send</strong> in WhatsApp to unlock your OTP delivery</div>
+            </div>
+            <div class="wa-step-row">
+              <div class="wa-step-num">3</div>
+              <div class="wa-step-label">Come back here and tap <strong style="color:rgba(255,255,255,0.7)">"I've sent the message"</strong></div>
+            </div>
+          </div>
+          <!-- Open WhatsApp button -->
+          <a id="wa-open-btn" href="#" class="btn-wa" onclick="openWhatsApp(event)">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Open WhatsApp to Send Message
+          </a>
+          <!-- Confirmation checkbox -->
+          <label class="wa-sent-confirm" for="wa-confirm-check">
+            <input type="checkbox" id="wa-confirm-check" onchange="toggleSendOtpBtn()">
+            <span class="wa-sent-confirm-label">I've sent the message on WhatsApp — <strong>send my OTP now</strong></span>
+          </label>
+        </div>
+
+        <button class="btn-primary" id="send-otp-btn" onclick="sendOTP()" disabled>Send OTP via WhatsApp</button>
+        <div class="form-legal" style="margin-top:12px;">By continuing, you agree to receive an OTP on WhatsApp. Standard rates apply.</div>
       </div>
 
+      <!-- Step 3: OTP entry -->
       <div class="form-step" id="step-3">
         <div class="form-title">Enter the OTP</div>
-        <div class="otp-meta">We've sent a 6-digit code to <strong id="otp-phone-display"></strong><br>Enter it below to confirm your number.</div>
+        <div class="otp-meta">We've sent a 6-digit code to <strong id="otp-phone-display"></strong><br>via WhatsApp. Enter it below to confirm.</div>
         <div class="otp-wrap">
           <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp0">
           <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp1">
@@ -488,6 +601,7 @@
         <button class="btn-primary" id="verify-btn" onclick="verifyOTP()">Verify &amp; Submit</button>
       </div>
 
+      <!-- Success -->
       <div class="success-view" id="success-view">
         <div class="success-icon">
           <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -503,48 +617,75 @@
 </div>
 
 <script>
+  // ── Config ──────────────────────────────────────────────────────────────
   const N8N_SEND_OTP_URL   = 'https://n8n.xerovolt.in/webhook/xerovolt-lead-submit';
   const N8N_VERIFY_OTP_URL = 'https://n8n.xerovolt.in/webhook/xerovolt-otp-verify';
   const N8N_RESEND_OTP_URL = 'https://n8n.xerovolt.in/webhook-test/80.xerovolt-otp-resend';
 
+  // !! Replace with your actual WhatsApp Business number (international format, no + or spaces)
+  const WA_BUSINESS_NUMBER = '918106912754';
+  const WA_PREFILL_MESSAGE = 'Hi Xerovolt! I'd like to get my OTP to book a demo.';
+
   let leadData = {};
   let timerInterval = null;
 
+  // ── Step 1 → Step 2 ─────────────────────────────────────────────────────
   function goToStep2() {
-    const fname = document.getElementById('fname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const city  = document.getElementById('city').value;
+    const fname    = document.getElementById('fname').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const city     = document.getElementById('city').value;
     const timeline = document.getElementById('timeline').value;
     let valid = true;
 
-    if (!fname)  { showErr('err-fname','fname'); valid=false; } else hideErr('err-fname','fname');
+    if (!fname)    { showErr('err-fname','fname');       valid=false; } else hideErr('err-fname','fname');
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('err-email','email'); valid=false; } else hideErr('err-email','email');
-    if (!city)   { showErr('err-city','city');  valid=false; } else hideErr('err-city','city');
-    if (!timeline) { showErr('err-timeline','timeline'); valid=false; } else hideErr('err-timeline', 'timeline');
-
+    if (!city)     { showErr('err-city','city');         valid=false; } else hideErr('err-city','city');
+    if (!timeline) { showErr('err-timeline','timeline'); valid=false; } else hideErr('err-timeline','timeline');
     if (!valid) return;
 
     leadData = {
-      firstName: fname,
-      lastName:  document.getElementById('lname').value.trim(),
-      email, 
-      city,
-      interest: document.getElementById('interest').value,
+      firstName:       fname,
+      lastName:        document.getElementById('lname').value.trim(),
+      email, city,
+      interest:        document.getElementById('interest').value,
       projectTimeline: timeline,
-      message:  document.getElementById('message').value.trim(),
-      source:   document.referrer || 'direct',
-      timestamp: new Date().toISOString()
+      message:         document.getElementById('message').value.trim(),
+      source:          document.referrer || 'direct',
+      timestamp:       new Date().toISOString()
     };
     setStep(2);
   }
 
+  // ── WhatsApp deep-link opener ────────────────────────────────────────────
+  function openWhatsApp(e) {
+    e.preventDefault();
+    const phone = document.getElementById('phone').value.replace(/\s/g,'');
+    if (!/^\d{10}$/.test(phone)) {
+      showErr('err-phone','phone');
+      return;
+    }
+    hideErr('err-phone','phone');
+    const text = encodeURIComponent(WA_PREFILL_MESSAGE);
+    const url  = `https://wa.me/${WA_BUSINESS_NUMBER}?text=${text}`;
+    window.open(url, '_blank');
+  }
+
+  // ── Enable/disable Send OTP button based on checkbox ────────────────────
+  function toggleSendOtpBtn() {
+    const checked = document.getElementById('wa-confirm-check').checked;
+    document.getElementById('send-otp-btn').disabled = !checked;
+  }
+
+  // ── Send OTP ─────────────────────────────────────────────────────────────
   async function sendOTP() {
     const phone = document.getElementById('phone').value.replace(/\s/g,'');
     if (!/^\d{10}$/.test(phone)) { showErr('err-phone','phone'); return; }
     hideErr('err-phone','phone');
     leadData.phone = '+91' + phone;
+
     const btn = document.getElementById('send-otp-btn');
     btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Sending…';
+
     try {
       const res = await fetch(N8N_SEND_OTP_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -552,10 +693,11 @@
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
-      btn.classList.remove('loading'); btn.textContent = 'Send OTP'; btn.disabled = false;
+      btn.classList.remove('loading'); btn.textContent = 'Send OTP via WhatsApp'; btn.disabled = false;
       setStep(3); startTimer(); document.getElementById('otp0').focus();
     } catch(e) {
-      btn.classList.remove('loading'); btn.textContent = 'Send OTP'; btn.disabled = false;
+      btn.classList.remove('loading'); btn.textContent = 'Send OTP via WhatsApp';
+      btn.disabled = !document.getElementById('wa-confirm-check').checked;
       const errEl = document.getElementById('err-phone');
       errEl.textContent = 'Could not send OTP. Please try again.';
       errEl.classList.add('show');
@@ -563,7 +705,8 @@
     }
   }
 
-  document.querySelectorAll('.otp-box').forEach((box,i) => {
+  // ── OTP box interactions ─────────────────────────────────────────────────
+  document.querySelectorAll('.otp-box').forEach((box, i) => {
     box.addEventListener('input', e => {
       const v = e.target.value.replace(/\D/g,'');
       e.target.value = v ? v[v.length-1] : '';
@@ -576,11 +719,15 @@
     box.addEventListener('paste', e => {
       e.preventDefault();
       const p = e.clipboardData.getData('text').replace(/\D/g,'').slice(0,6);
-      p.split('').forEach((ch,j) => { const el=document.getElementById('otp'+j); if(el){el.value=ch;el.classList.add('filled');} });
+      p.split('').forEach((ch, j) => {
+        const el = document.getElementById('otp'+j);
+        if (el) { el.value=ch; el.classList.add('filled'); }
+      });
       document.getElementById('otp'+Math.min(p.length,5))?.focus();
     });
   });
 
+  // ── Verify OTP ───────────────────────────────────────────────────────────
   async function verifyOTP() {
     const otp = [0,1,2,3,4,5].map(i=>document.getElementById('otp'+i).value).join('');
     if (otp.length < 6) { showOtpErr('Enter all 6 digits'); return; }
@@ -609,7 +756,10 @@
     const el = document.getElementById('err-otp');
     el.textContent = msg; el.classList.add('show');
     document.querySelectorAll('.otp-box').forEach(b => b.style.borderColor='var(--error)');
-    setTimeout(() => { el.classList.remove('show'); document.querySelectorAll('.otp-box').forEach(b=>b.style.borderColor=''); }, 4000);
+    setTimeout(() => {
+      el.classList.remove('show');
+      document.querySelectorAll('.otp-box').forEach(b => b.style.borderColor='');
+    }, 4000);
   }
 
   function startTimer() {
@@ -635,6 +785,7 @@
     } catch(e) { console.error('Resend failed:', e); }
   }
 
+  // ── Success ──────────────────────────────────────────────────────────────
   function showSuccess() {
     clearInterval(timerInterval);
     document.getElementById('step-indicator').style.display = 'none';
@@ -642,22 +793,34 @@
     document.getElementById('success-msg').textContent =
       'Thank you, ' + leadData.firstName + '! Our team will reach out to ' + leadData.phone + ' within 24 hours to schedule your free demo.';
     document.getElementById('success-view').classList.add('show');
-    [1,2,3].forEach(i => setDot(i,'done'));
+    [1,2,3,4].forEach(i => setDot(i,'done'));
   }
 
+  // ── Step management (now 4 steps) ────────────────────────────────────────
   function setStep(n) {
-    [1,2,3].forEach(i => {
-      document.getElementById('step-'+i).classList.toggle('active', i===n);
+    [1,2,3,4].forEach(i => {
+      const stepEl = document.getElementById('step-'+i);
+      if (stepEl) stepEl.classList.toggle('active', i===n);
       const d = document.getElementById('dot-'+i);
-      if (i<n) { d.className='step-dot done'; d.innerHTML='✓'; }
+      if (i < n)  { d.className='step-dot done'; d.innerHTML='✓'; }
       else if (i===n) { d.className='step-dot active'; d.textContent=i; }
       else { d.className='step-dot'; d.textContent=i; }
-      if (i<3) document.getElementById('line-'+i).classList.toggle('done', i<n);
+      if (i < 4) {
+        const line = document.getElementById('line-'+i);
+        if (line) line.classList.toggle('done', i < n);
+      }
     });
   }
-  function setDot(i,state) { const d=document.getElementById('dot-'+i); d.className='step-dot '+state; if(state==='done') d.innerHTML='✓'; }
-  function showErr(eid,fid) { document.getElementById(eid).classList.add('show'); document.getElementById(fid)?.classList.add('error'); }
-  function hideErr(eid,fid) { document.getElementById(eid).classList.remove('show'); document.getElementById(fid)?.classList.remove('error'); }
+
+  function setDot(i, state) {
+    const d = document.getElementById('dot-'+i);
+    if (!d) return;
+    d.className = 'step-dot ' + state;
+    if (state==='done') d.innerHTML='✓';
+  }
+
+  function showErr(eid, fid) { document.getElementById(eid).classList.add('show'); document.getElementById(fid)?.classList.add('error'); }
+  function hideErr(eid, fid) { document.getElementById(eid).classList.remove('show'); document.getElementById(fid)?.classList.remove('error'); }
 </script>
 </body>
 </html>
